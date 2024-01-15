@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "enum": ["1.0"]
+    }
+  },
+  "required": ["version"],
+  "if": {
+    "properties": {
+      "version": {"const": "1.0"}
+    }
+  },
+  "then": {
+    "properties": {
+      "version": {"const": "1.0"},
+      "definition": {
+        "$ref": "#/definitions/FieldDefinition_v1_0"
+      }
+    },
+    "required": ["definition"]
+  },
+  "definitions": {
+    "FieldDefinition_v1_0": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string"
+            },
+            "path": {
+              "oneOf": [
+                { "type": "string" },
+                { "type": "null" }
+              ]
+            },
+            "name": {
+              "type": "string"
+            },
+            "validation": {
+              "type": "string"
+            }
+          },
+          "required": ["name", "validation"]
+        }
+      }
+    }
+  }
+}

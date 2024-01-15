@@ -1,0 +1,31 @@
+{
+  "type": "module",
+  "name": "kasko-webapp-external",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/app.js",
+  "private": true,
+  "scripts": {
+    "postinstall": "kasko-app-postinstall --skip-jsx-types --manifest-schema-path=schema/manifest.schema.json",
+    "start": "node --no-warnings=ExperimentalWarning --watch-path=./{mock-api,scripts,.env,product.json} --watch-path=./src/{plugin-versions.yaml,integrations,product,sub_products} ./scripts/dev.js",
+    "build": "node --no-warnings=ExperimentalWarning ./scripts/build.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js src"
+  },
+  "keywords": [],
+  "author": "Marcis Bergmanis",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@kasko/fe-webapp-utils-lib": "^2.5.1",
+    "@types/jest": "^29.5.11",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "better-react-web-component": "^1.1.0",
+    "dotenv": "^16.3.1",
+    "esbuild": "^0.19.10",
+    "jest": "^29.7.0",
+    "js-yaml": "^4.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.3.3"
+  }
+}

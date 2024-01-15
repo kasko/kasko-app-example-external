@@ -1,0 +1,444 @@
+{
+  "$schema": "../../schema/manifest.schema.json",
+  "version": "1.0",
+  "schema": {
+    "config": {
+      "initial_screen": "start",
+      "default_values": {
+        "dob": "2000-11-11",
+        "agent_count": 2
+      },
+      "requests": [
+        {
+          "type": "quote",
+          "version": "v3"
+        },
+        {
+          "type": "policy",
+          "version": "v2",
+          "field_definition": [
+            {
+              "name": "agent_count",
+              "path": "data",
+              "validation": "integer|disallowed_odd_number"
+            },
+            {
+              "name": "optin1",
+              "path": "data",
+              "validation": "boolean|required"
+            },
+            {
+              "name": "optin2",
+              "path": "data",
+              "validation": "boolean|required"
+            }
+          ]
+        }
+      ]
+    },
+    "layout": {
+      "default": {
+        "components": [
+          {
+            "type": "header",
+            "class": "mb-xl",
+            "config": {
+              "components": [
+                {
+                  "type": "grid",
+                  "config": {
+                    "grid": [
+                      {
+                        "class": "col col-sm-3",
+                        "components": [
+                          {
+                            "type": "button-side-menu",
+                            "config": {
+                              "position": "left"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "class": "col col-sm-6",
+                        "components": [
+                          {
+                            "type": "grid-inline",
+                            "class": "py-xs",
+                            "config": {
+                              "position": "center",
+                              "components": [
+                                {
+                                  "type": "image",
+                                  "class": "nav-logo",
+                                  "config": {
+                                    "src": "data:image/png;base64,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"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "class": "col col-sm-3",
+                        "components": []
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "container",
+            "class": "container",
+            "config": {
+              "components": [
+                {
+                  "type": "flow",
+                  "config": {}
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "flow": [
+      {
+        "path": "start",
+        "components": [
+          {
+            "type": "custom-title",
+            "config": {
+              "content_key": "flow.start.title"
+            }
+          },
+          {
+            "type": "form",
+            "config": {
+              "width": "default",
+              "components": [
+                {
+                  "type": "markdown",
+                  "config": {
+                    "content_key": "flow.start.markdown"
+                  }
+                },
+                {
+                  "type": "form-input",
+                  "config": {
+                    "field_name": "agent_count",
+                    "field_type": "number",
+                    "content_key": {
+                      "label": "form.agent_count.label",
+                      "placeholder": "form.agent_count.placeholder"
+                    }
+                  }
+                },
+                {
+                  "type": "error-list",
+                  "config": {}
+                }
+              ],
+              "footer_components": [
+                {
+                  "type": "form-button-next",
+                  "config": {
+                    "color": "primary",
+                    "content_key": "form.next.button",
+                    "disabled": false
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "next": "details"
+      },
+      {
+        "path": "details",
+        "components": [
+          {
+            "type": "title",
+            "config": {
+              "content_key": "flow.details.title"
+            }
+          },
+          {
+            "type": "form",
+            "config": {
+              "width": "default",
+              "components": [
+                {
+                  "type": "form-input",
+                  "config": {
+                    "field_name": "first_name",
+                    "field_type": "text",
+                    "content_key": {
+                      "label": "form.first_name.label",
+                      "placeholder": "form.first_name.placeholder"
+                    },
+                    "disabled": false
+                  }
+                },
+                {
+                  "type": "form-input",
+                  "config": {
+                    "field_name": "last_name",
+                    "field_type": "text",
+                    "content_key": {
+                      "label": "form.last_name.label",
+                      "placeholder": "form.last_name.placeholder"
+                    },
+                    "disabled": false
+                  }
+                },
+                {
+                  "type": "form-datepicker",
+                  "config": {
+                    "field_name": "dob",
+                    "content_key": {
+                      "label": "form.dob.label",
+                      "placeholder": "form.dob.placeholder"
+                    }
+                  }
+                },
+                {
+                  "type": "error-list",
+                  "config": {}
+                }
+              ],
+              "footer_components": [
+                {
+                  "type": "price-tag",
+                  "config": {
+                    "content_key": {
+                      "body": "flow.price_tag.body",
+                      "footer": "flow.price_tag.footer"
+                    },
+                    "discount_location": "after"
+                  }
+                },
+                {
+                  "type": "grid",
+                  "config": {
+                    "is_flex": true,
+                    "grid": [
+                      {
+                        "class": "col-6",
+                        "components": [
+                          {
+                            "type": "button-back",
+                            "config": {
+                              "color": "default",
+                              "content_key": "flow.back.button",
+                              "disabled": false
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "class": "col-6",
+                        "components": [
+                          {
+                            "type": "form-button-next",
+                            "config": {
+                              "color": "primary",
+                              "content_key": "form.next.button",
+                              "disabled": false
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "next": "duration"
+      },
+      {
+        "path": "duration",
+        "components": [
+          {
+            "type": "title",
+            "config": {
+              "content_key": "flow.duration.title"
+            }
+          },
+          {
+            "type": "form",
+            "config": {
+              "width": "default",
+              "components": [
+                {
+                  "type": "form-input",
+                  "config": {
+                    "field_name": "duration",
+                    "field_type": "text",
+                    "content_key": {
+                      "label": "form.data.duration.label",
+                      "placeholder": "form.data.duration.placeholder"
+                    },
+                    "disabled": false
+                  }
+                },
+                {
+                  "type": "error-list",
+                  "config": {}
+                }
+              ],
+              "footer_components": [
+                {
+                  "type": "price-tag",
+                  "config": {
+                    "content_key": {
+                      "body": "flow.price_tag.body",
+                      "footer": "flow.price_tag.footer"
+                    },
+                    "discount_location": "after"
+                  }
+                },
+                {
+                  "type": "grid",
+                  "config": {
+                    "is_flex": true,
+                    "grid": [
+                      {
+                        "class": "col-6",
+                        "components": [
+                          {
+                            "type": "button-back",
+                            "config": {
+                              "color": "default",
+                              "content_key": "flow.back.button",
+                              "disabled": false
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "class": "col-6",
+                        "components": [
+                          {
+                            "type": "form-button-next",
+                            "config": {
+                              "color": "primary",
+                              "content_key": "form.next.button",
+                              "disabled": false
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "next": "optins"
+      },
+      {
+        "path": "optins",
+        "components": [
+          {
+            "type": "title",
+            "config": {
+              "content_key": "flow.optins.title"
+            }
+          },
+          {
+            "type": "form",
+            "config": {
+              "width": "default",
+              "components": [
+                {
+                  "type": "form-input-optin",
+                  "config": {
+                    "type": "checkbox",
+                    "field_name": "optin1",
+                    "field_value": false,
+                    "content_key": "form.data.optin1.label"
+                  }
+                },
+                {
+                  "type": "form-input-optin",
+                  "config": {
+                    "type": "checkbox",
+                    "field_name": "optin2",
+                    "field_value": false,
+                    "content_key": "form.data.optin2.label"
+                  }
+                },
+                {
+                  "type": "error-list",
+                  "config": {}
+                }
+              ],
+              "footer_components": [
+                {
+                  "type": "grid",
+                  "config": {
+                    "is_flex": true,
+                    "grid": [
+                      {
+                        "class": "col-6",
+                        "components": [
+                          {
+                            "type": "button-back",
+                            "config": {
+                              "color": "default",
+                              "content_key": "flow.back.button",
+                              "disabled": false
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "class": "col-6",
+                        "components": [
+                          {
+                            "type": "form-button-next",
+                            "config": {
+                              "color": "primary",
+                              "content_key": "form.next.button",
+                              "disabled": false
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "next": "success"
+      },
+      {
+        "path": "success",
+        "components": [
+          {
+            "type": "title",
+            "config": {
+              "content_key": "flow.success.title"
+            }
+          },
+          {
+            "type": "markdown",
+            "config": {
+              "content_key": "flow.success.markdown",
+              "text_position": "center"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "entry_points": [
+    "app.js",
+    "app.css"
+  ],
+  "dashboard_entry_points": [
+    "app.js",
+    "dashboard.css"
+  ]
+}

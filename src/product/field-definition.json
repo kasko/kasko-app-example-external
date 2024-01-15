@@ -1,0 +1,28 @@
+{
+  "$schema": "../../schema/field-definition.schema.json",
+  "version": "1.0",
+  "definition": {
+    "policy": [
+      {
+        "name": "email",
+        "path": null,
+        "validation": "required|string"
+      },
+      {
+        "name": "first_name",
+        "path": null,
+        "validation": "required|string"
+      },
+      {
+        "name": "last_name",
+        "path": null,
+        "validation": "required|string"
+      },
+      {
+        "name": "dob",
+        "path": "data",
+        "validation": "required|string|iso_date"
+      }
+    ]
+  }
+}
