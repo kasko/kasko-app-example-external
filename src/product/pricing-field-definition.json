@@ -1,0 +1,13 @@
+{
+  "$schema": "../../schema/field-definition.schema.json",
+  "version": "1.0",
+  "definition": {
+    "quote": [
+      {
+        "name": "duration",
+        "path": "data",
+        "validation": "string|required"
+      }
+    ]
+  }
+}

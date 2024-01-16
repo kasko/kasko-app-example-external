@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "index": {
+      "type": "string"
+    },
+    "integrations": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "version_id": {
+            "type": "string"
+          },
+          "index": {
+            "type": "string"
+          },
+          "css": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "version_id",
+          "index"
+        ]
+      }
+    }
+  },
+  "required": [
+    "id",
+    "index",
+    "integrations"
+  ]
+}

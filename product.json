@@ -1,0 +1,14 @@
+{
+  "$schema": "./schema/product.schema.json",
+  "name": "Test",
+  "id": "pr_111",
+  "index": "./src/product/index.js",
+  "integrations": {
+    "in_222": {
+      "name": "Distributor 1",
+      "version_id": "ins_333",
+      "index": "./src/integrations/test1/index.js",
+      "css": "./src/integrations/test1/style.css"
+    }
+  }
+}

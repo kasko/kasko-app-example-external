@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- @inject('webapp.title') -->
+
+  <!-- @inject('webapp.config') -->
+  <!-- @inject('webapp.plugins.head') -->
+</head>
+
+<body>
+  <!-- Webapp specific styles -->
+  <link rel="stylesheet" href="/app.css" class="kasko-stylesheet" property="stylesheet" />
+
+  <!-- @inject('webapp.touchpoint.extra') -->
+  <!-- @inject('webapp.kasko.js') -->
+  <!-- @inject('webapp.kasko.js.child') -->
+
+  <!-- Kasko App -->
+  <div kasko-app></div>
+
+  <!-- App scripts are injected here -->
+  <script src="/app.js" class="kasko-script" onload="this.loaded = true" onerror="this.errored = true"></script>
+
+  <!-- @inject('webapp.plugins.body') -->
+  <!-- @inject('webapp.hmr.script') -->
+
+  <script>
+    const defaultColor = getComputedStyle(document.documentElement).getPropertyValue('--state-primary');
+
+    const link = document.createElement('link');
+    link.rel = 'icon';
+    link.type = 'image/svg+xml';
+    link.href = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="231" height="231" fill="none"><g clip-path="url(#a)"><path fill="#EABC26" fill-rule="evenodd" d="m77 123-11-13-66 62v59h77a107 107 0 0 1 0-108Z" clip-rule="evenodd"/><path fill="#D6A429" d="M0 0v147L154 0H0Z"/><path fill="#E2AB25" fill-rule="evenodd" d="M79 97 181 0h50v90a107 107 0 0 0-143 17l-9-10Z" clip-rule="evenodd"/><path fill="${defaultColor || '#ebbb2a'}" d="M231 159v61a11 11 0 0 1-10 11h-27a10 10 0 0 1-10-11v-26a5 5 0 0 0-5-5h-21a5 5 0 0 0-6 5v26a11 11 0 0 1-10 11h-26a10 10 0 0 1-11-11v-61a11 11 0 0 1 3-7l53-50a10 10 0 0 1 14 0l53 50a11 11 0 0 1 3 7Z"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h231v231H0z"/></clipPath></defs></svg>`)}`;
+
+    document.head.appendChild(link);
+  </script>
+</body>
+
+</html>
