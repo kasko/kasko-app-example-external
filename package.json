@@ -15,7 +15,7 @@
   "author": "Marcis Bergmanis",
   "license": "UNLICENSED",
   "devDependencies": {
-    "@kasko/fe-webapp-utils-lib": "^2.5.1",
+    "@kasko/fe-webapp-utils-lib": "^2.5.3",
     "@types/jest": "^29.5.11",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
