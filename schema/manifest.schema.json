@@ -5,9 +5,7 @@
     "version": {
       "description": "Version of the manifest parsing engine.",
       "type": "string",
-      "enum": [
-        "1.0"
-      ]
+      "const": "1.0"
     },
     "schema": {
       "$ref": "#/definitions/ApiManifestSchema"
@@ -1454,9 +1452,7 @@
       "properties": {
         "type": {
           "type": "string",
-          "enum": [
-            "jsonlogic"
-          ]
+          "const": "jsonlogic"
         },
         "schema": {
           "anyOf": [
