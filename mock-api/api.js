@@ -1,7 +1,7 @@
 import { mockApi } from '@kasko/fe-webapp-utils-lib/server';
 
 // A way to proxy any request to a qa instance
-/** @type {import("@kasko/fe-webapp-utils-lib/server")["MockedAPIMiddleware"]} */
+/** @type {import("@kasko/fe-webapp-utils-lib/server").MockedAPIMiddleware} */
 const proxy = (req, res) => {
   res.writeHead(307, { Location: `https://api.qa-ats.eu1.kaskoqa.com${req.url}` });
   res.end();
