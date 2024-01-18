@@ -1,8 +1,6 @@
-import * as index from './index.js';
-
 /**
  * @typedef {Object} ResponseProps
- * @property {Omit<typeof index, 'response'>} index
+ * @property {Omit<typeof import('./index.js'), 'response'>} index
  * @property {Record<string, string>} queryString
  */
 
