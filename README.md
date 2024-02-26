@@ -173,7 +173,7 @@ It will produce file structure like this in `dist` folder:
 Now every product/webapp folder is ready for zipping:
 
 ```sh
-zip -r webapp.zip dist/products/pr_123/webapp
+(cd dist/products/pr_123/webapp; zip -r - .) > webapp.zip
 ```
 
 1. Upload newly created `webapp.zip` to KASKO dashboard;
