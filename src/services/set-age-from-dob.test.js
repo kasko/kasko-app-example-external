@@ -24,6 +24,6 @@ describe('setAgeFromDobService', () => {
 
     setAgeFromDobService(kasko);
 
-    expect(kasko.dispatchEvent).toHaveBeenCalledWith('set-state-input', { age: 20 });
+    expect(kasko.dispatchEvent).toHaveBeenCalledWith('set-state-input', { 'data.age': 20 });
   });
 });
