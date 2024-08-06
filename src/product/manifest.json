@@ -1,12 +1,12 @@
 {
   "$schema": "../../schema/manifest.schema.json",
-  "version": "1.0",
+  "version": "2.0",
   "schema": {
     "config": {
       "initial_screen": "start",
       "default_values": {
-        "dob": "2000-11-11",
-        "agent_count": 2
+        "data.dob": "2000-11-11",
+        "data.agent_count": 2
       },
       "requests": [
         {
@@ -129,7 +129,7 @@
                 {
                   "type": "form-input",
                   "config": {
-                    "field_name": "agent_count",
+                    "field_name": "data.agent_count",
                     "field_type": "number",
                     "content_key": {
                       "label": "form.agent_count.label",
@@ -198,7 +198,7 @@
                 {
                   "type": "form-datepicker",
                   "config": {
-                    "field_name": "dob",
+                    "field_name": "data.dob",
                     "content_key": {
                       "label": "form.dob.label",
                       "placeholder": "form.dob.placeholder"
@@ -278,7 +278,7 @@
                 {
                   "type": "form-input",
                   "config": {
-                    "field_name": "duration",
+                    "field_name": "data.duration",
                     "field_type": "text",
                     "content_key": {
                       "label": "form.data.duration.label",
@@ -361,7 +361,7 @@
                   "type": "form-input-optin",
                   "config": {
                     "type": "checkbox",
-                    "field_name": "optin1",
+                    "field_name": "data.optin1",
                     "field_value": false,
                     "content_key": "form.data.optin1.label"
                   }
@@ -370,7 +370,7 @@
                   "type": "form-input-optin",
                   "config": {
                     "type": "checkbox",
-                    "field_name": "optin2",
+                    "field_name": "data.optin2",
                     "field_value": false,
                     "content_key": "form.data.optin2.label"
                   }
