@@ -1460,7 +1460,11 @@
               "$ref": "#/definitions/JsonLogic"
             },
             {
-              "type": "boolean"
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ]
             }
           ]
         }
@@ -1476,6 +1480,16 @@
       "defaultProperties": []
     },
     "FieldValueObject": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/FieldValueObjectWithContentKey"
+        },
+        {
+          "$ref": "#/definitions/FieldValueObjectWithLabel"
+        }
+      ]
+    },
+    "FieldValueObjectWithContentKey": {
       "type": "object",
       "properties": {
         "value": {
@@ -1495,6 +1509,29 @@
       "defaultProperties": [],
       "required": [
         "content_key",
+        "value"
+      ]
+    },
+    "FieldValueObjectWithLabel": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "boolean"
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        }
+      },
+      "defaultProperties": [],
+      "required": [
+        "label",
         "value"
       ]
     },
@@ -1652,14 +1689,30 @@
     "AddressComponentContentKeys": {
       "type": "object",
       "properties": {
-        "placeholder": {
+        "address_placeholder": {
           "description": "Placeholder content key.",
+          "type": "string"
+        },
+        "address_enter_manually": {
+          "description": "Enter Manually Address link content key.",
+          "type": "string"
+        },
+        "toggle_address_enter_manually_true": {
+          "description": "Enter Manually Address link content key for toggling `true` state.",
+          "type": "string"
+        },
+        "toggle_address_enter_manually_false": {
+          "description": "Enter Manually Address link content key for toggling `false` state.",
+          "type": "string"
+        },
+        "address_label": {
+          "description": "Label content key.",
           "type": "string"
         }
       },
       "defaultProperties": [],
       "required": [
-        "placeholder"
+        "address_placeholder"
       ]
     },
     "GoogleMapsKeys": {
@@ -1746,6 +1799,19 @@
         ]
       },
       "defaultProperties": []
+    },
+    "AddressComponentContentKeys1": {
+      "type": "object",
+      "properties": {
+        "placeholder": {
+          "description": "Placeholder content key.",
+          "type": "string"
+        }
+      },
+      "defaultProperties": [],
+      "required": [
+        "placeholder"
+      ]
     },
     "PredictionGoogleMaps": {
       "type": "object",
@@ -1854,6 +1920,25 @@
           "type": "object",
           "additionalProperties": {}
         },
+        "computed_values": {
+          "description": "Computes values and applies them into input state.\n\nWhen `update_when_changes` is defined, framework will wait for any of those\nvalues to change before applying updates to input.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "$ref": "#/definitions/ApiManifestJsonLogic"
+              },
+              "update_when_changes": {
+                "description": "Manifest JsonLogic structures.",
+                "$ref": "#/definitions/ApiManifestJsonLogic"
+              },
+              "skip_form": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
         "requests": {
           "description": "Enabled requests for this application.",
           "type": "array",
@@ -1916,11 +2001,25 @@
         },
         "path": {
           "description": "Path to the field (i.e. `\"\"` for root-level or `\"data\"` for data level).",
-          "type": "string"
+          "type": [
+            "null",
+            "string"
+          ]
         },
         "validation": {
           "description": "Validation rules applied to this field.",
           "type": "string"
+        },
+        "editable": {
+          "description": "For MTA patch field definition it is possible to define if the field is\neditable or not.\n\nThis can also be JsonLogic, but that works only in FE as BE is NOT willing\nto implement this or alternative feature as always! :)\n\nJsonLogic is used to make fields disabled for editing based on existing data.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ApiManifestJsonLogic"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       }
     },
@@ -2006,11 +2105,15 @@
       "type": "object",
       "properties": {
         "path": {
-          "description": "Short name of the screen.",
+          "description": "Short path of the screen.",
           "type": [
             "null",
             "string"
           ]
+        },
+        "name": {
+          "description": "Short name of the screen.",
+          "type": "string"
         },
         "layout": {
           "description": "Name of a layout that's used for this screen.",
@@ -5154,12 +5257,12 @@
               ]
             },
             "fixed_length": {
+              "description": "Fixed number of repeated component definitions",
               "anyOf": [
                 {
                   "$ref": "#/definitions/ApiManifestJsonLogic"
                 },
                 {
-                  "description": "Fixed number of repeated component definitions",
                   "type": "number"
                 }
               ]
@@ -6121,7 +6224,7 @@
                   "$ref": "#/definitions/ApiManifestJsonLogic"
                 },
                 {
-                  "description": "If price should be retrieved from `extraData`, then key can be set as this parameter.",
+                  "description": "If price should be retrieved from `extra_data`, then key can be set as this parameter.",
                   "type": "string"
                 }
               ]
@@ -8580,6 +8683,18 @@
                 "sp_1": "form.subscription_plan_selection.single",
                 "sp_2": "form.subscription_plan_selection.quarterly"
               }
+            },
+            "show_price": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show gross premium value",
+                  "type": "boolean",
+                  "default": true
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -11801,7 +11916,7 @@
               ]
             },
             "content_key": {
-              "$ref": "#/definitions/AddressComponentContentKeys",
+              "$ref": "#/definitions/AddressComponentContentKeys1",
               "description": "Object of content keys."
             },
             "keys": {

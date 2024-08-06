@@ -32,8 +32,11 @@ type KaskoExternalDispatcherEvents = {
   /* Set global state + trigger requests (if valid) (ExtendInput) */
   (name: 'set-state-input', config: Record<string, any>): void;
 
+  /* Reset global state by replacing it all with payload (ResetInput) */
+  (name: 'reset-state-input', config: Record<string, any>): void;
+
   /* Set global + local state via specific path */
-  (name: 'write-input', config: { overwrite?: boolean; [key: string]: any }): void;
+  (name: 'write-input', config: { overwrite?: boolean; path: string; value: any }): void;
 
   /* Open a specific screen (using this should be a last-resort, preferably use `go-forward` event and manifest `next` definition) */
   (name: 'go-to-screen', config: { screen: string }): void;
@@ -70,10 +73,16 @@ type KaskoExternalDispatcherEvents = {
    * - pass `shouldOverwrite: false` to preserve current state upon item change, optional
    * - pass `shouldNavigate: false` to skip initial_screen navigation upon item change, optional
    * */
-  (name: 'request-item', config: { item_id: string; shouldOverwrite?: boolean; shouldNavigate?: boolean }): void;
+  (
+    name: 'request-item',
+    config: { item_id: string; shouldOverwrite?: boolean; shouldNavigate?: boolean },
+  ): void;
 
   /* Submits form data to input state if data is valid */
-  (name: 'submit-form', config: { input: Record<string, any>; submitType?: 'set' | 'submit' }): void;
+  (
+    name: 'submit-form',
+    config: { input: Record<string, any>; submitType?: 'set' | 'submit' },
+  ): void;
 
   /* Triggers payment request */
   (name: 'request-payment', config: void): void;
@@ -82,10 +91,18 @@ type KaskoExternalDispatcherEvents = {
    * Triggers lead request
    * pass `shouldNavigate: false` to disable auto navigation to next screen after lead is created
    */
-  (name: 'save-quote', config: { shouldNavigate?: boolean}): void;
+  (name: 'save-quote', config: { shouldNavigate?: boolean }): void;
 
   /* Add a new media file to a global state */
-  (name: 'add-upload', config: { file: File; field_name: string; id: number; callback?: (error?: null | Error, payload?: MediaModel) => void }): void;
+  (
+    name: 'add-upload',
+    config: {
+      file: File;
+      field_name: string;
+      id: number;
+      callback?: (error?: null | Error, payload?: MediaModel) => void;
+    },
+  ): void;
 
   /* Remove a media file with a specified id from a global state */
   (name: 'remove-upload', config: { id: number }): void;
@@ -94,20 +111,20 @@ type KaskoExternalDispatcherEvents = {
   (name: 'save-input-snapshot', config: void): void;
 
   /**
-  * Fetches data from Data Service
-  *   config: {
-  *     field_name: 'test_field',
-  *     data_field_name: 'data_field',
-  *     filter: [{
-  *       filter_param: 'filter_param',
-  *     }],
-  *     field_map: {
-  *       map_param: 'map_param',
-  *     },
-  *     value: 'value',
-  *     callback: () => {},
-  *   }
-  * */
+   * Fetches data from Data Service
+   *   config: {
+   *     field_name: 'test_field',
+   *     data_field_name: 'data_field',
+   *     filter: [{
+   *       filter_param: 'filter_param',
+   *     }],
+   *     field_map: {
+   *       map_param: 'map_param',
+   *     },
+   *     value: 'value',
+   *     callback: () => {},
+   *   }
+   * */
   (name: 'search-for-data', config: void): void;
   (name: 'edit-field', config: void): void;
 };
@@ -123,7 +140,11 @@ type KaskoExternalListenerEvents = {
   (name: 'validation-success', callback: () => void): void;
 
   /* Monitors input state changes */
-  (name: 'state-changed', callback: (value: any) => void, config: { slice?: string | string[] }): void;
+  (
+    name: 'state-changed',
+    callback: (value: any) => void,
+    config: { slice?: string | string[] },
+  ): void;
 
   /* Monitors route changes */
   (name: 'route-changed', callback: (value: { previous: any; current: any }) => void): void;
@@ -145,6 +166,19 @@ type KaskoExternalListenerEvents = {
 
   /* Monitors successful item request response */
   (name: 'item-loaded', callback: (value: Record<string, any>) => void): void;
+
+  /* Monitors successful get policy request response */
+  (name: 'policy-loaded', callback: (value: Record<string, any>) => void): void;
+
+  /* Subscribes to any request to get pre-built payload from it when it changes */
+  (
+    name: 'request-payload-ready',
+    callback: (value: {
+      isReady: boolean;
+      errors: Record<string, string[]> | null;
+      payload: Record<string, any>;
+    }) => void,
+  ): void;
 };
 
 /**
@@ -175,6 +209,11 @@ export interface KaskoPublicService {
   getState: (slice?: string) => any;
 
   /**
+   * Get all validations for specific field_name.
+   */
+  getFieldValidationByName: (field_name: string) => FieldDefinitionValidationModel[] | undefined;
+
+  /**
    * Creates date from string via kaskoDate.
    */
   createDate: (date?: Date | string | number) => Date;
@@ -185,6 +224,15 @@ export interface KaskoPublicService {
    * @see: http://jsonlogic.com/
    */
   evaluateJsonLogic: (schema: ApiManifestJsonLogic, args?: Record<string, any>) => any;
+
+  /**
+   * Get pre-built request payload by name.
+   */
+  getRequestPayload: (name: string) => {
+    isReady: boolean;
+    errors: Record<string, string[]> | null;
+    payload: Record<string, any>;
+  };
 
   /**
    * Dispatch an event.
