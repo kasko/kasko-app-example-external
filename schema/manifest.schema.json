@@ -4,8 +4,11 @@
   "properties": {
     "version": {
       "description": "Version of the manifest parsing engine.",
-      "type": "string",
-      "const": "1.0"
+      "enum": [
+        "1.0",
+        "2.0"
+      ],
+      "type": "string"
     },
     "schema": {
       "$ref": "#/definitions/ApiManifestSchema"
@@ -1747,41 +1750,9 @@
         "lng"
       ]
     },
-    "GoogleMapsAddress": {
+    "Record<string,string[]>": {
       "type": "object",
-      "properties": {
-        "street": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "house_number": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "postcode": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "city": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "defaultProperties": [],
-      "required": [
-        "city",
-        "house_number",
-        "postcode",
-        "street"
-      ]
+      "defaultProperties": []
     },
     "GoogleMapsRestrictions": {
       "type": "object",
@@ -1811,42 +1782,6 @@
       "defaultProperties": [],
       "required": [
         "placeholder"
-      ]
-    },
-    "PredictionGoogleMaps": {
-      "type": "object",
-      "properties": {
-        "street": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "house_number": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "postcode": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "city": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "defaultProperties": [],
-      "required": [
-        "city",
-        "house_number",
-        "postcode",
-        "street"
       ]
     },
     "KaskoFormSliderItem": {
@@ -6292,7 +6227,7 @@
               "$ref": "#/definitions/Record<string,any>",
               "description": "Input fields with data to replace in request",
               "default": {
-                "duration": "p1y"
+                "data.duration": "p1y"
               }
             },
             "content_key": {
@@ -11743,7 +11678,7 @@
             },
             "field_mapping": {
               "description": "Field mapping configuration for Google Api return values.",
-              "$ref": "#/definitions/GoogleMapsAddress"
+              "$ref": "#/definitions/Record<string,string[]>"
             },
             "prefill_value": {
               "anyOf": [
@@ -11753,7 +11688,7 @@
                 {
                   "description": "Autocomplete input prefill value.",
                   "type": "string",
-                  "default": "{street} {house_number}, {postcode} {city}"
+                  "default": "{data.street} {data.house_number}, {data.postcode} {data.city}"
                 }
               ]
             },
@@ -11929,7 +11864,7 @@
             },
             "field_mapping": {
               "description": "Field mapping configuration for Google Api return values.",
-              "$ref": "#/definitions/PredictionGoogleMaps"
+              "$ref": "#/definitions/Record<string,string[]>"
             },
             "restrictions": {
               "description": "Restrictions for countries where search is allowed",

@@ -201,7 +201,11 @@ export interface KaskoPublicService {
   /**
    * Get the whole form state.
    */
-  getFormState: () => Record<string, any>;
+  getFormState: <T = Record<string, any>>() => T;
+  /**
+   * Get slice from form state.
+   */
+  getFormState: <T = any>(slice: string) => T;
 
   /**
    * Get the whole state or a slice of the state.
