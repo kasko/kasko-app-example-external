@@ -196,43 +196,43 @@ export interface KaskoPublicService {
   /**
    * Retrieve a translation by the given translation key.
    */
-  getTranslation: (key: string, params?: Record<string, any>) => string;
+  getTranslation(key: string, params?: Record<string, any>): string;
 
   /**
    * Get the whole form state.
    */
-  getFormState: <T = Record<string, any>>() => T;
+  getFormState<T = Record<string, any>>(): T;
   /**
    * Get slice from form state.
    */
-  getFormState: <T = any>(slice: string) => T;
+  getFormState<T = any>(slice: string): T;
 
   /**
    * Get the whole state or a slice of the state.
    */
-  getState: (slice?: string) => any;
+  getState(slice?: string): any;
 
   /**
    * Get all validations for specific field_name.
    */
-  getFieldValidationByName: (field_name: string) => FieldDefinitionValidationModel[] | undefined;
+  getFieldValidationByName(field_name: string): FieldDefinitionValidationModel[] | undefined;
 
   /**
    * Creates date from string via kaskoDate.
    */
-  createDate: (date?: Date | string | number) => Date;
+  createDate(date?: Date | string | number): Date;
 
   /**
    * Run a JsonLogic schema.
    *
    * @see: http://jsonlogic.com/
    */
-  evaluateJsonLogic: (schema: ApiManifestJsonLogic, args?: Record<string, any>) => any;
+  evaluateJsonLogic(schema: ApiManifestJsonLogic, args?: Record<string, any>): any;
 
   /**
    * Get pre-built request payload by name.
    */
-  getRequestPayload: (name: string) => {
+  getRequestPayload(name: string): {
     isReady: boolean;
     errors: Record<string, string[]> | null;
     payload: Record<string, any>;
@@ -251,10 +251,10 @@ export interface KaskoPublicService {
   /**
    * Remove all event listeners with the same name & callback.
    */
-  removeEventListener: (name: string, handler: Function) => void;
+  removeEventListener(name: string, handler: Function): void;
 
   /**
    * Retrieve a referrer URL by the given query string state.
    */
-  getReferrerUrl: () => string;
+  getReferrerUrl(): string;
 }
