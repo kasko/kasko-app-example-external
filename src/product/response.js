@@ -22,6 +22,7 @@ export async function response({ index, queryString }) {
             type: 'stripe_intents',
             field_definition: [],
             keys: {
+              // To test stripe payments, change this to your stripe test key
               public_key: 'pk_test_EXAMPLE',
             },
           },

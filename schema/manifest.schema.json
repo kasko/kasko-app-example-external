@@ -4,8 +4,11 @@
   "properties": {
     "version": {
       "description": "Version of the manifest parsing engine.",
-      "type": "string",
-      "const": "1.0"
+      "enum": [
+        "1.0",
+        "2.0"
+      ],
+      "type": "string"
     },
     "schema": {
       "$ref": "#/definitions/ApiManifestSchema"
@@ -1460,7 +1463,11 @@
               "$ref": "#/definitions/JsonLogic"
             },
             {
-              "type": "boolean"
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ]
             }
           ]
         }
@@ -1476,6 +1483,16 @@
       "defaultProperties": []
     },
     "FieldValueObject": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/FieldValueObjectWithContentKey"
+        },
+        {
+          "$ref": "#/definitions/FieldValueObjectWithLabel"
+        }
+      ]
+    },
+    "FieldValueObjectWithContentKey": {
       "type": "object",
       "properties": {
         "value": {
@@ -1495,6 +1512,29 @@
       "defaultProperties": [],
       "required": [
         "content_key",
+        "value"
+      ]
+    },
+    "FieldValueObjectWithLabel": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "boolean"
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        }
+      },
+      "defaultProperties": [],
+      "required": [
+        "label",
         "value"
       ]
     },
@@ -1652,14 +1692,30 @@
     "AddressComponentContentKeys": {
       "type": "object",
       "properties": {
-        "placeholder": {
+        "address_placeholder": {
           "description": "Placeholder content key.",
+          "type": "string"
+        },
+        "address_enter_manually": {
+          "description": "Enter Manually Address link content key.",
+          "type": "string"
+        },
+        "toggle_address_enter_manually_true": {
+          "description": "Enter Manually Address link content key for toggling `true` state.",
+          "type": "string"
+        },
+        "toggle_address_enter_manually_false": {
+          "description": "Enter Manually Address link content key for toggling `false` state.",
+          "type": "string"
+        },
+        "address_label": {
+          "description": "Label content key.",
           "type": "string"
         }
       },
       "defaultProperties": [],
       "required": [
-        "placeholder"
+        "address_placeholder"
       ]
     },
     "GoogleMapsKeys": {
@@ -1694,41 +1750,9 @@
         "lng"
       ]
     },
-    "GoogleMapsAddress": {
+    "Record<string,string[]>": {
       "type": "object",
-      "properties": {
-        "street": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "house_number": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "postcode": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "city": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "defaultProperties": [],
-      "required": [
-        "city",
-        "house_number",
-        "postcode",
-        "street"
-      ]
+      "defaultProperties": []
     },
     "GoogleMapsRestrictions": {
       "type": "object",
@@ -1747,40 +1771,17 @@
       },
       "defaultProperties": []
     },
-    "PredictionGoogleMaps": {
+    "AddressComponentContentKeys1": {
       "type": "object",
       "properties": {
-        "street": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "house_number": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "postcode": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "city": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        "placeholder": {
+          "description": "Placeholder content key.",
+          "type": "string"
         }
       },
       "defaultProperties": [],
       "required": [
-        "city",
-        "house_number",
-        "postcode",
-        "street"
+        "placeholder"
       ]
     },
     "KaskoFormSliderItem": {
@@ -1854,6 +1855,25 @@
           "type": "object",
           "additionalProperties": {}
         },
+        "computed_values": {
+          "description": "Computes values and applies them into input state.\n\nWhen `update_when_changes` is defined, framework will wait for any of those\nvalues to change before applying updates to input.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "$ref": "#/definitions/ApiManifestJsonLogic"
+              },
+              "update_when_changes": {
+                "description": "Manifest JsonLogic structures.",
+                "$ref": "#/definitions/ApiManifestJsonLogic"
+              },
+              "skip_form": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
         "requests": {
           "description": "Enabled requests for this application.",
           "type": "array",
@@ -1916,11 +1936,25 @@
         },
         "path": {
           "description": "Path to the field (i.e. `\"\"` for root-level or `\"data\"` for data level).",
-          "type": "string"
+          "type": [
+            "null",
+            "string"
+          ]
         },
         "validation": {
           "description": "Validation rules applied to this field.",
           "type": "string"
+        },
+        "editable": {
+          "description": "For MTA patch field definition it is possible to define if the field is\neditable or not.\n\nThis can also be JsonLogic, but that works only in FE as BE is NOT willing\nto implement this or alternative feature as always! :)\n\nJsonLogic is used to make fields disabled for editing based on existing data.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ApiManifestJsonLogic"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       }
     },
@@ -2006,11 +2040,15 @@
       "type": "object",
       "properties": {
         "path": {
-          "description": "Short name of the screen.",
+          "description": "Short path of the screen.",
           "type": [
             "null",
             "string"
           ]
+        },
+        "name": {
+          "description": "Short name of the screen.",
+          "type": "string"
         },
         "layout": {
           "description": "Name of a layout that's used for this screen.",
@@ -5154,12 +5192,12 @@
               ]
             },
             "fixed_length": {
+              "description": "Fixed number of repeated component definitions",
               "anyOf": [
                 {
                   "$ref": "#/definitions/ApiManifestJsonLogic"
                 },
                 {
-                  "description": "Fixed number of repeated component definitions",
                   "type": "number"
                 }
               ]
@@ -6121,7 +6159,7 @@
                   "$ref": "#/definitions/ApiManifestJsonLogic"
                 },
                 {
-                  "description": "If price should be retrieved from `extraData`, then key can be set as this parameter.",
+                  "description": "If price should be retrieved from `extra_data`, then key can be set as this parameter.",
                   "type": "string"
                 }
               ]
@@ -6189,7 +6227,7 @@
               "$ref": "#/definitions/Record<string,any>",
               "description": "Input fields with data to replace in request",
               "default": {
-                "duration": "p1y"
+                "data.duration": "p1y"
               }
             },
             "content_key": {
@@ -8580,6 +8618,18 @@
                 "sp_1": "form.subscription_plan_selection.single",
                 "sp_2": "form.subscription_plan_selection.quarterly"
               }
+            },
+            "show_price": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show gross premium value",
+                  "type": "boolean",
+                  "default": true
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -11628,7 +11678,7 @@
             },
             "field_mapping": {
               "description": "Field mapping configuration for Google Api return values.",
-              "$ref": "#/definitions/GoogleMapsAddress"
+              "$ref": "#/definitions/Record<string,string[]>"
             },
             "prefill_value": {
               "anyOf": [
@@ -11638,7 +11688,7 @@
                 {
                   "description": "Autocomplete input prefill value.",
                   "type": "string",
-                  "default": "{street} {house_number}, {postcode} {city}"
+                  "default": "{data.street} {data.house_number}, {data.postcode} {data.city}"
                 }
               ]
             },
@@ -11801,7 +11851,7 @@
               ]
             },
             "content_key": {
-              "$ref": "#/definitions/AddressComponentContentKeys",
+              "$ref": "#/definitions/AddressComponentContentKeys1",
               "description": "Object of content keys."
             },
             "keys": {
@@ -11814,7 +11864,7 @@
             },
             "field_mapping": {
               "description": "Field mapping configuration for Google Api return values.",
-              "$ref": "#/definitions/PredictionGoogleMaps"
+              "$ref": "#/definitions/Record<string,string[]>"
             },
             "restrictions": {
               "description": "Restrictions for countries where search is allowed",
