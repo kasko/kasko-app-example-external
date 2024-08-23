@@ -1968,7 +1968,10 @@
         },
         "path": {
           "description": "Path to the field (i.e. `\"\"` for root-level or `\"data\"` for data level).",
-          "type": "string"
+          "type": [
+            "null",
+            "string"
+          ]
         },
         "send_to_api": {
           "description": "Should the value be sent to BE or not (Default is `true`).",
@@ -3418,6 +3421,18 @@
                       }
                     ]
                   }
+                }
+              ]
+            },
+            "hide_duplicates": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Hides errors that produce the same translation",
+                  "type": "boolean",
+                  "default": false
                 }
               ]
             }
@@ -10196,7 +10211,33 @@
                 },
                 {
                   "description": "Content key",
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "button": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "success": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "defaultProperties": [],
+                  "required": [
+                    "button"
+                  ]
                 }
               ]
             },
@@ -10287,6 +10328,18 @@
               ]
             },
             "next_on_success": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Navigate to next screen on successful `save for later` request.",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_success_message": {
               "anyOf": [
                 {
                   "$ref": "#/definitions/ApiManifestJsonLogic"
