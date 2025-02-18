@@ -1,4 +1,4 @@
-import { default as productConfig } from '../product.json' assert { type: "json" };
+import { default as productConfig } from '../product.json' with { type: "json" };
 
 export const entries = Object.entries(productConfig.integrations)
   .reduce((acc, [id, integration]) => {
