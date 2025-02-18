@@ -364,6 +364,22 @@
             "type": "object",
             "properties": {
               "type": {
+                "const": "form-input-signature"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "$ref": "#/definitions/KaskoFormInputSignatureComponent"
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "type": {
                 "const": "form-input-button"
               }
             },
@@ -1348,6 +1364,7 @@
                     "form-input",
                     "form-input-dropdown",
                     "form-input-phone",
+                    "form-input-signature",
                     "form-input-button",
                     "form-input-monetary",
                     "form-input-select",
@@ -1496,10 +1513,17 @@
       "type": "object",
       "properties": {
         "value": {
-          "type": [
-            "string",
-            "number",
-            "boolean"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ApiManifestJsonLogic"
+            },
+            {
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ]
+            }
           ]
         },
         "content_key": {
@@ -1519,10 +1543,17 @@
       "type": "object",
       "properties": {
         "value": {
-          "type": [
-            "string",
-            "number",
-            "boolean"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ApiManifestJsonLogic"
+            },
+            {
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ]
+            }
           ]
         },
         "label": {
@@ -2886,6 +2917,18 @@
                   "description": "Set `autocomplete` mode",
                   "type": "boolean",
                   "default": true
+                }
+              ]
+            },
+            "disabled": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "The component is disabled",
+                  "type": "boolean",
+                  "default": false
                 }
               ]
             }
@@ -4375,6 +4418,130 @@
       ],
       "additionalProperties": false
     },
+    "KaskoFormInputSignatureComponent": {
+      "type": "object",
+      "title": "KaskoFormInputSignatureComponent",
+      "description": "Canvas element for drawing signature and uploading it to media service.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "default": "form-input-signature",
+          "enum": [
+            "form-input-signature"
+          ]
+        },
+        "class": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ApiManifestJsonLogic"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "visibility_condition": {
+          "$ref": "#/definitions/ApiManifestJsonLogic"
+        },
+        "config": {
+          "type": "object",
+          "properties": {
+            "fields": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/definitions/ApiManifestJsonLogic"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "field_name": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Name of the field",
+                  "type": "string"
+                }
+              ]
+            },
+            "content_key": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Content key",
+                  "type": "object",
+                  "properties": {
+                    "clear": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "confirm": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "defaultProperties": [],
+                  "required": [
+                    "clear",
+                    "confirm"
+                  ]
+                }
+              ]
+            },
+            "disabled": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Disable signature field",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            }
+          },
+          "defaultProperties": [],
+          "required": [
+            "content_key",
+            "field_name"
+          ],
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
     "KaskoFormInputButtonComponent": {
       "type": "object",
       "title": "KaskoFormInputButtonComponent",
@@ -5321,7 +5488,19 @@
             },
             "defaults": {
               "description": "Data that will be added to array when button is clicked",
-              "$ref": "#/definitions/Record<string,any>"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Record<string,any>"
+                },
+                {
+                  "type": [
+                    "null",
+                    "string",
+                    "number",
+                    "boolean"
+                  ]
+                }
+              ]
             },
             "disabled": {
               "anyOf": [
@@ -6514,6 +6693,16 @@
                       ]
                     },
                     "payment_method_slimpay": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "payment_method_twikey": {
                       "anyOf": [
                         {
                           "$ref": "#/definitions/ApiManifestJsonLogic"
@@ -9085,6 +9274,18 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "editing_flag_change": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Used to enable/disable editing flag change upon component render",
+                  "type": "boolean",
+                  "default": true
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -9187,6 +9388,18 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "editing_flag_change": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Used to enable/disable editing flag change upon component render",
+                  "type": "boolean",
+                  "default": true
+                }
+              ]
             }
           },
           "defaultProperties": [],

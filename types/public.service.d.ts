@@ -68,6 +68,9 @@ type KaskoExternalDispatcherEvents = {
   /* Sets custom data for data lookup component. Need to pass the name of data and a promise response */
   (name: 'set-custom-data', config: { name: string; handler: Promise<any> }): void;
 
+  /* Change webapp content according to chosen language */
+  (name: 'change-language', config: { language: string }): void;
+
   /**
    * Loads new item with specified item_id
    * - pass `shouldOverwrite: false` to preserve current state upon item change, optional
@@ -105,7 +108,7 @@ type KaskoExternalDispatcherEvents = {
   ): void;
 
   /* Remove a media file with a specified id from a global state */
-  (name: 'remove-upload', config: { id: number }): void;
+  (name: 'remove-upload', config: { id: number | string }): void;
 
   /* Save latest input state as a backup value when user goes back */
   (name: 'save-input-snapshot', config: void): void;
@@ -127,6 +130,12 @@ type KaskoExternalDispatcherEvents = {
    * */
   (name: 'search-for-data', config: void): void;
   (name: 'edit-field', config: void): void;
+
+  /* Trigger offer update and returns callback value if offer update is successful or not */
+  (name: 'offer-update', callback?: (isSuccessful: boolean) => void): void;
+
+  /* Load payment providers */
+  (name: 'load-payment-providers', config: void): void;
 };
 
 type KaskoExternalListenerEvents = {
@@ -175,6 +184,7 @@ type KaskoExternalListenerEvents = {
     name: 'request-payload-ready',
     callback: (value: {
       isReady: boolean;
+      isValid: boolean;
       errors: Record<string, string[]> | null;
       payload: Record<string, any>;
     }) => void,
@@ -234,6 +244,7 @@ export interface KaskoPublicService {
    */
   getRequestPayload(name: string): {
     isReady: boolean;
+    isValid: boolean;
     errors: Record<string, string[]> | null;
     payload: Record<string, any>;
   };
@@ -257,4 +268,9 @@ export interface KaskoPublicService {
    * Retrieve a referrer URL by the given query string state.
    */
   getReferrerUrl(): string;
+
+  /**
+   * Checks if form has any errors for specific field.
+   */
+  shouldShowError(field_name: string): boolean;
 }
