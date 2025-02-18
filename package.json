@@ -5,6 +5,9 @@
   "description": "",
   "main": "./src/app.js",
   "private": true,
+  "engines": {
+    "node": ">=23.0.0"
+  },
   "scripts": {
     "postinstall": "kasko-app-postinstall --skip-jsx-types --manifest-schema-path=schema/manifest.schema.json",
     "start": "node --no-warnings=ExperimentalWarning --watch-path=./{mock-api,scripts,.env,product.json} --watch-path=./src/{plugin-versions.yaml,integrations,product,sub_products} ./scripts/dev.js",
