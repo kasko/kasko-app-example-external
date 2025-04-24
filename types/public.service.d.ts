@@ -102,6 +102,7 @@ type KaskoExternalDispatcherEvents = {
     config: {
       file: File;
       field_name: string;
+      designation?: string;
       id: number;
       callback?: (error?: null | Error, payload?: MediaModel) => void;
     },
@@ -130,6 +131,9 @@ type KaskoExternalDispatcherEvents = {
    * */
   (name: 'search-for-data', config: void): void;
   (name: 'edit-field', config: void): void;
+
+  /* Force triggers quote */
+  (name: 'force-trigger-quote', config: { callback?: ({ payload, isValid }: { payload: any; isValid: boolean }) => void }): void;
 
   /* Trigger offer update and returns callback value if offer update is successful or not */
   (name: 'offer-update', callback?: (isSuccessful: boolean) => void): void;

@@ -220,6 +220,22 @@
             "type": "object",
             "properties": {
               "type": {
+                "const": "language-select"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "$ref": "#/definitions/KaskoLanguageSelectComponent"
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "type": {
                 "const": "error"
               }
             },
@@ -1340,6 +1356,38 @@
             "type": "object",
             "properties": {
               "type": {
+                "const": "claim-update-button"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "$ref": "#/definitions/KaskoClaimUpdateButtonComponent"
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "input-details"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "$ref": "#/definitions/KaskoInputDetailsComponent"
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "type": {
                 "type": "string",
                 "not": {
                   "enum": [
@@ -1355,6 +1403,7 @@
                     "grid",
                     "grid-inline",
                     "label",
+                    "language-select",
                     "error",
                     "error-list",
                     "info-markdown",
@@ -1424,7 +1473,9 @@
                     "module-grid",
                     "module-grid-row",
                     "form-slider",
-                    "form-input-numeric"
+                    "form-input-numeric",
+                    "claim-update-button",
+                    "input-details"
                   ]
                 }
               }
@@ -1494,6 +1545,24 @@
       "description": "JsonLogic schema.",
       "type": "object",
       "additionalProperties": {}
+    },
+    "OptionsProps": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string"
+        },
+        "src": {
+          "type": "string"
+        },
+        "content_key": {
+          "type": "string"
+        }
+      },
+      "defaultProperties": [],
+      "required": [
+        "language"
+      ]
     },
     "Record<string,string>": {
       "type": "object",
@@ -1584,6 +1653,22 @@
           "description": "Placeholder content key.",
           "type": "string"
         },
+        "select": {
+          "description": "Select content key.",
+          "type": "string"
+        },
+        "remove": {
+          "description": "Remove content key.",
+          "type": "string"
+        },
+        "max": {
+          "description": "Max upload limit reached content key.",
+          "type": "string"
+        },
+        "limits": {
+          "description": "Limits content key.",
+          "type": "string"
+        },
         "label": {
           "description": "Label content key.",
           "type": "string"
@@ -1591,7 +1676,10 @@
       },
       "defaultProperties": [],
       "required": [
-        "placeholder"
+        "max",
+        "placeholder",
+        "remove",
+        "select"
       ]
     },
     "PaymentSubscriptionPlanConfig": {
@@ -1727,18 +1815,6 @@
           "description": "Placeholder content key.",
           "type": "string"
         },
-        "address_enter_manually": {
-          "description": "Enter Manually Address link content key.",
-          "type": "string"
-        },
-        "toggle_address_enter_manually_true": {
-          "description": "Enter Manually Address link content key for toggling `true` state.",
-          "type": "string"
-        },
-        "toggle_address_enter_manually_false": {
-          "description": "Enter Manually Address link content key for toggling `false` state.",
-          "type": "string"
-        },
         "address_label": {
           "description": "Label content key.",
           "type": "string"
@@ -1808,6 +1884,10 @@
         "placeholder": {
           "description": "Placeholder content key.",
           "type": "string"
+        },
+        "label": {
+          "description": "Label content key.",
+          "type": "string"
         }
       },
       "defaultProperties": [],
@@ -1876,6 +1956,10 @@
           "description": "Date format.",
           "type": "string"
         },
+        "scroll_into_view_on_edit": {
+          "description": "Determines if scrollIntoView happens upon summary edit",
+          "type": "boolean"
+        },
         "default_values": {
           "description": "Default `input` state values.",
           "type": "object",
@@ -1922,6 +2006,10 @@
           "items": {
             "type": "string"
           }
+        },
+        "update_offer_on_changes": {
+          "description": "Update already created offer when data changes.",
+          "type": "boolean"
         }
       }
     },
@@ -2364,47 +2452,14 @@
           "$ref": "#/definitions/ApiManifestJsonLogic"
         },
         "config": {
-          "type": "object",
           "properties": {
             "fields": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ApiManifestJsonLogic"
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "anyOf": [
-                      {
-                        "$ref": "#/definitions/ApiManifestJsonLogic"
-                      },
-                      {
-                        "type": "string"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "position": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ApiManifestJsonLogic"
-                },
-                {
-                  "description": "On which side button should be aligned",
-                  "enum": [
-                    "left",
-                    "right"
-                  ],
-                  "type": "string",
-                  "default": "left"
-                }
-              ]
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
-          "defaultProperties": [],
-          "$schema": "http://json-schema.org/draft-07/schema#",
           "additionalProperties": false
         }
       },
@@ -2467,6 +2522,22 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the container",
+                  "enum": [
+                    "default",
+                    "wide"
+                  ],
+                  "type": "string",
+                  "default": "default"
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -2844,22 +2915,6 @@
                 }
               ]
             },
-            "width": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ApiManifestJsonLogic"
-                },
-                {
-                  "description": "How wide should the form be? `wide` for full width, but `default` for limited width",
-                  "enum": [
-                    "default",
-                    "wide"
-                  ],
-                  "type": "string",
-                  "default": "default"
-                }
-              ]
-            },
             "instant_validation": {
               "anyOf": [
                 {
@@ -2903,6 +2958,18 @@
                 },
                 {
                   "description": "Enables mode that reverts user input to what it was before data was changed in current screen when navigation happens without the press of \"next\" button (e.g. link click, back button click)",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "prevent_revalidation_after_is_submitted": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Prevents re-validation of form that has been submitted once. This means that newly shown fields will not be errrored",
                   "type": "boolean",
                   "default": false
                 }
@@ -3273,12 +3340,121 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
           "required": [
             "content_key"
           ],
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "KaskoLanguageSelectComponent": {
+      "type": "object",
+      "title": "KaskoLanguageSelectComponent",
+      "description": "Language Select Component for changing the language",
+      "properties": {
+        "type": {
+          "type": "string",
+          "default": "language-select",
+          "enum": [
+            "language-select"
+          ]
+        },
+        "class": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ApiManifestJsonLogic"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "visibility_condition": {
+          "$ref": "#/definitions/ApiManifestJsonLogic"
+        },
+        "config": {
+          "type": "object",
+          "properties": {
+            "fields": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/definitions/ApiManifestJsonLogic"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "options": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Language options.",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/OptionsProps"
+                  }
+                }
+              ]
+            },
+            "show_label_on_button": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show label on button.",
+                  "type": "boolean",
+                  "default": true
+                }
+              ]
+            }
+          },
+          "defaultProperties": [],
           "$schema": "http://json-schema.org/draft-07/schema#",
           "additionalProperties": false
         }
@@ -3865,6 +4041,30 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -4029,6 +4229,30 @@
                   "description": "Prevents paste action into input field",
                   "type": "boolean",
                   "default": true
+                }
+              ]
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
                 }
               ]
             },
@@ -4199,6 +4423,30 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -4398,6 +4646,30 @@
                 },
                 {
                   "description": "Set the value to true to enable `default_mask`",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
                   "type": "boolean",
                   "default": false
                 }
@@ -4675,15 +4947,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
-                  "default": "primary"
+                  "default": "accent"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             }
@@ -4799,6 +5103,21 @@
                 }
               ]
             },
+            "currency_symbol_position": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show currency symbol before or after. (default is hidden)",
+                  "enum": [
+                    "after",
+                    "before"
+                  ],
+                  "type": "string"
+                }
+              ]
+            },
             "disabled": {
               "anyOf": [
                 {
@@ -4845,6 +5164,30 @@
                   "description": "Sets decimal separator for input field (it doesn't affect value in state)",
                   "type": "string",
                   "default": "."
+                }
+              ]
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
                 }
               ]
             }
@@ -4983,6 +5326,35 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "align": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Alignment of label and input",
+                  "enum": [
+                    "center",
+                    "left",
+                    "right"
+                  ],
+                  "type": "string",
+                  "default": "left"
+                }
+              ]
+            },
+            "show_right": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show right components",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -5164,6 +5536,30 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -5394,6 +5790,41 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "show_more_after": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Maximum number of items to show before showing a \"show more\" button",
+                  "type": "number"
+                }
+              ]
+            },
+            "content_key": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Content key for the repeater",
+                  "type": "object",
+                  "properties": {
+                    "show_more": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "defaultProperties": []
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -5522,15 +5953,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
                   "default": "primary"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             }
@@ -5634,15 +6097,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
-                  "default": "info"
+                  "default": "danger"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             }
@@ -5773,15 +6268,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
                   "default": "primary"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             }
@@ -5895,15 +6422,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
                   "default": "primary"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             },
@@ -6051,15 +6610,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
-                  "default": "primary"
+                  "default": "success"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             }
@@ -6168,6 +6759,7 @@
                   "defaultProperties": [],
                   "required": [
                     "button",
+                    "input_label",
                     "input_placeholder"
                   ]
                 }
@@ -6193,8 +6785,8 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
                     "info",
                     "primary",
                     "success",
@@ -6287,6 +6879,30 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -6838,23 +7454,6 @@
                 }
               ]
             },
-            "min_mode": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ApiManifestJsonLogic"
-                },
-                {
-                  "description": "Set min view mode of datepicker",
-                  "enum": [
-                    "day",
-                    "month",
-                    "year"
-                  ],
-                  "type": "string",
-                  "default": "day"
-                }
-              ]
-            },
             "disabled": {
               "anyOf": [
                 {
@@ -6880,6 +7479,30 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -6974,16 +7597,6 @@
                         }
                       ]
                     },
-                    "time": {
-                      "anyOf": [
-                        {
-                          "$ref": "#/definitions/ApiManifestJsonLogic"
-                        },
-                        {
-                          "type": "string"
-                        }
-                      ]
-                    },
                     "placeholder": {
                       "anyOf": [
                         {
@@ -6997,8 +7610,7 @@
                   },
                   "defaultProperties": [],
                   "required": [
-                    "placeholder",
-                    "time"
+                    "placeholder"
                   ]
                 }
               ]
@@ -7011,30 +7623,6 @@
                 {
                   "description": "Display format for date in input field",
                   "type": "string"
-                }
-              ]
-            },
-            "show_meridian": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ApiManifestJsonLogic"
-                },
-                {
-                  "description": "Shows 24h format",
-                  "type": "boolean",
-                  "default": false
-                }
-              ]
-            },
-            "show_seconds": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ApiManifestJsonLogic"
-                },
-                {
-                  "description": "Shows additional seconds field",
-                  "type": "boolean",
-                  "default": false
                 }
               ]
             },
@@ -7063,6 +7651,30 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -7157,16 +7769,6 @@
                         }
                       ]
                     },
-                    "time": {
-                      "anyOf": [
-                        {
-                          "$ref": "#/definitions/ApiManifestJsonLogic"
-                        },
-                        {
-                          "type": "string"
-                        }
-                      ]
-                    },
                     "placeholder": {
                       "anyOf": [
                         {
@@ -7180,33 +7782,8 @@
                   },
                   "defaultProperties": [],
                   "required": [
-                    "placeholder",
-                    "time"
+                    "placeholder"
                   ]
-                }
-              ]
-            },
-            "show_meridian": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ApiManifestJsonLogic"
-                },
-                {
-                  "description": "Shows 24h format",
-                  "type": "boolean",
-                  "default": false
-                }
-              ]
-            },
-            "show_seconds": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ApiManifestJsonLogic"
-                },
-                {
-                  "description": "Shows additional seconds field",
-                  "type": "boolean",
-                  "default": false
                 }
               ]
             },
@@ -7235,6 +7812,30 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -7329,27 +7930,7 @@
                         }
                       ]
                     },
-                    "date_placeholder": {
-                      "anyOf": [
-                        {
-                          "$ref": "#/definitions/ApiManifestJsonLogic"
-                        },
-                        {
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "month_placeholder": {
-                      "anyOf": [
-                        {
-                          "$ref": "#/definitions/ApiManifestJsonLogic"
-                        },
-                        {
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "year_placeholder": {
+                    "placeholder": {
                       "anyOf": [
                         {
                           "$ref": "#/definitions/ApiManifestJsonLogic"
@@ -7362,33 +7943,8 @@
                   },
                   "defaultProperties": [],
                   "required": [
-                    "date_placeholder",
-                    "month_placeholder",
-                    "year_placeholder"
+                    "placeholder"
                   ]
-                }
-              ]
-            },
-            "id": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ApiManifestJsonLogic"
-                },
-                {
-                  "description": "Id attribute",
-                  "type": "string"
-                }
-              ]
-            },
-            "icon": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ApiManifestJsonLogic"
-                },
-                {
-                  "description": "Icon shown besides the field. All font-awesome icons are available",
-                  "default": "fa fa-birthday-cake",
-                  "type": "string"
                 }
               ]
             },
@@ -7417,6 +7973,30 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -7920,6 +8500,30 @@
                   "default": "asc"
                 }
               ]
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -8297,6 +8901,13 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "footer_components": {
+              "description": "Children component definitions added on top of the input element",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiManifestComponent"
+              }
             }
           },
           "defaultProperties": [],
@@ -8433,6 +9044,56 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "header_components": {
+              "description": "Header components",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiManifestComponent"
+              }
+            },
+            "footer_components": {
+              "description": "Footer components",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiManifestComponent"
+              }
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header components",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_right": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show right components",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer components",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -8592,6 +9253,37 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "footer_components": {
+              "description": "Footer components",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiManifestComponent"
+              }
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header components",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer components",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -8719,6 +9411,30 @@
               "items": {
                 "$ref": "#/definitions/ApiManifestComponent"
               }
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -9172,8 +9888,7 @@
                 },
                 {
                   "description": "Should there be animations when showing/hiding sidebar",
-                  "type": "boolean",
-                  "default": true
+                  "type": "boolean"
                 }
               ]
             }
@@ -9250,6 +9965,18 @@
                 }
               ]
             },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": true
+                }
+              ]
+            },
             "input_field": {
               "anyOf": [
                 {
@@ -9289,9 +10016,6 @@
             }
           },
           "defaultProperties": [],
-          "required": [
-            "content_key"
-          ],
           "$schema": "http://json-schema.org/draft-07/schema#",
           "additionalProperties": false
         }
@@ -9570,15 +10294,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
-                  "default": "primary"
+                  "default": "outline"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             },
@@ -9702,15 +10458,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
                   "default": "primary"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             },
@@ -9835,15 +10623,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
                   "default": "primary"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             },
@@ -9965,15 +10785,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
                   "default": "primary"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             },
@@ -10478,15 +11330,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
                   "default": "primary"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             },
@@ -10672,15 +11556,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
                   "default": "primary"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             },
@@ -10789,15 +11705,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
                   "default": "primary"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             }
@@ -10893,15 +11841,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
                   "default": "primary"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             },
@@ -11026,15 +12006,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
                   "default": "primary"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             },
@@ -11079,7 +12091,7 @@
     "KaskoPollDocumentsComponent": {
       "type": "object",
       "title": "KaskoPollDocumentsComponent",
-      "description": "Component that has no display, but wherever it's rendered it automatically starts polling.\n\nDocuments can be accessed in jsonlogic or content strings using `document` namespace.\n\n### Example accessing document in markdown content\n```csv\n\"flow.key\",\"Here is offer document: [{document.lead.offer.name}]({document.lead.offer.url})\"\n```",
+      "description": "Component that automatically starts polling documents if displayed on screen.\n\nDocuments can be accessed in jsonlogic or content strings using `document` namespace.\n\n### Example accessing document in markdown content\n```csv\n\"flow.key\",\"Here is offer document: [{document.lead.offer.name}]({document.lead.offer.url})\"\n```",
       "properties": {
         "type": {
           "type": "string",
@@ -11173,6 +12185,62 @@
                 {
                   "description": "Polls new document after set time interval (milliseconds)",
                   "type": "number"
+                }
+              ]
+            },
+            "content_key": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Content key",
+                  "type": "object",
+                  "properties": {
+                    "no_documents": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "in_progress": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "download": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "defaultProperties": []
+                }
+              ]
+            },
+            "show_documents": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Should documents be shown",
+                  "type": "boolean",
+                  "default": true
                 }
               ]
             }
@@ -11273,15 +12341,47 @@
                 {
                   "description": "Color of the button",
                   "enum": [
+                    "accent",
                     "danger",
-                    "default",
-                    "info",
+                    "outline",
                     "primary",
                     "success",
                     "warning"
                   ],
                   "type": "string",
                   "default": "primary"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
                 }
               ]
             },
@@ -11378,13 +12478,12 @@
                 },
                 {
                   "description": "Icon type.",
-                  "default": "fa",
                   "enum": [
                     "class",
-                    "fa",
                     "svg"
                   ],
-                  "type": "string"
+                  "type": "string",
+                  "default": "svg"
                 }
               ]
             },
@@ -11395,7 +12494,6 @@
                 },
                 {
                   "description": "Content of the icon. Class name if type is `fa` or SVG content if `svg` type.",
-                  "default": "fa-bath fa-5x",
                   "type": "string"
                 }
               ]
@@ -11423,7 +12521,7 @@
         {
           "type": "icon-popover",
           "config": {
-            "type": "fa",
+            "type": "class",
             "content": "fa-info-circle"
           }
         }
@@ -11479,12 +12577,12 @@
                 },
                 {
                   "description": "Icon type.",
-                  "default": "fa",
                   "enum": [
-                    "fa",
+                    "class",
                     "svg"
                   ],
-                  "type": "string"
+                  "type": "string",
+                  "default": "svg"
                 }
               ]
             },
@@ -11495,7 +12593,6 @@
                 },
                 {
                   "description": "Content of the icon. Class name if type is `fa` or SVG content if `svg` type.",
-                  "default": "fa-info-circle",
                   "type": "string"
                 }
               ]
@@ -11958,18 +13055,6 @@
                 }
               ]
             },
-            "manual_address_flag": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ApiManifestJsonLogic"
-                },
-                {
-                  "description": "Flag name to be dispatched on manual address selection.",
-                  "type": "string",
-                  "default": "manual_address"
-                }
-              ]
-            },
             "restrictions": {
               "description": "Flag name to be dispatched on manual address selection.",
               "$ref": "#/definitions/GoogleMapsRestrictions"
@@ -11994,18 +13079,6 @@
                   "description": "If `true` the component is disabled.",
                   "type": "boolean",
                   "default": false
-                }
-              ]
-            },
-            "navigate_to_next_screen": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ApiManifestJsonLogic"
-                },
-                {
-                  "description": "Defines if need to go to next screen on `enter address manually` click, if it's `false`, then it's just toggling `manual_address` flag.",
-                  "type": "boolean",
-                  "default": true
                 }
               ]
             },
@@ -12239,7 +13312,7 @@
                   "$ref": "#/definitions/ApiManifestJsonLogic"
                 },
                 {
-                  "description": "Children component definitions added to the columns's body",
+                  "description": "Children component definitions added to the columns body",
                   "type": "array",
                   "items": {
                     "anyOf": [
@@ -12648,12 +13721,320 @@
                   "default": false
                 }
               ]
+            },
+            "show_header": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show header",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "show_footer": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
             }
           },
           "defaultProperties": [],
           "required": [
             "content_key",
             "field_name"
+          ],
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "KaskoClaimUpdateButtonComponent": {
+      "type": "object",
+      "title": "KaskoClaimUpdateButtonComponent",
+      "description": "Button used for updating claim data.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "default": "claim-update-button",
+          "enum": [
+            "claim-update-button"
+          ]
+        },
+        "class": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ApiManifestJsonLogic"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "visibility_condition": {
+          "$ref": "#/definitions/ApiManifestJsonLogic"
+        },
+        "config": {
+          "type": "object",
+          "properties": {
+            "fields": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/definitions/ApiManifestJsonLogic"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "content_key": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Content key",
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "claim_outdated_error": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "defaultProperties": [],
+                  "required": [
+                    "claim_outdated_error",
+                    "title"
+                  ]
+                }
+              ]
+            },
+            "color": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Color of the button",
+                  "enum": [
+                    "danger",
+                    "default",
+                    "outline",
+                    "primary",
+                    "success",
+                    "warning"
+                  ],
+                  "type": "string",
+                  "default": "primary"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "disabled": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Is this button disabled or not",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "next_on_success": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Go to next screen if claim is updated",
+                  "type": "boolean",
+                  "default": true
+                }
+              ]
+            }
+          },
+          "defaultProperties": [],
+          "required": [
+            "content_key"
+          ],
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "KaskoInputDetailsComponent": {
+      "type": "object",
+      "title": "KaskoInputDetailsComponent",
+      "description": "A form input element wrapper for more details popup.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "default": "input-details",
+          "enum": [
+            "input-details"
+          ]
+        },
+        "class": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ApiManifestJsonLogic"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "visibility_condition": {
+          "$ref": "#/definitions/ApiManifestJsonLogic"
+        },
+        "config": {
+          "type": "object",
+          "properties": {
+            "fields": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/definitions/ApiManifestJsonLogic"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "content_key": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Content key",
+                  "type": "object",
+                  "properties": {
+                    "button": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "details": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "defaultProperties": [],
+                  "required": [
+                    "button",
+                    "details"
+                  ]
+                }
+              ]
+            },
+            "components": {
+              "description": "Default components to attach this details on",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiManifestComponent"
+              }
+            }
+          },
+          "defaultProperties": [],
+          "required": [
+            "components",
+            "content_key"
           ],
           "$schema": "http://json-schema.org/draft-07/schema#",
           "additionalProperties": false

@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { mockApi } from '@kasko/fe-webapp-utils-lib/server';
 
 // A way to proxy any request to a qa instance
@@ -6,6 +7,20 @@ const proxy = (req, res) => {
   res.writeHead(307, { Location: `https://api.qa-ats.eu1.kaskoqa.com${req.url}` });
   res.end();
 };
+
+async function getBody(req) {
+  try {
+    const buffers = [];
+
+    for await (const chunk of req) {
+      buffers.push(chunk);
+    }
+
+    return JSON.parse(Buffer.concat(buffers).toString());
+  } catch (e) {
+    return e;
+  }
+}
 
 export default mockApi({
   // 'POST /quotes': proxy,
@@ -27,5 +42,25 @@ export default mockApi({
         // },
       }),
     );
+  },
+
+  'POST /v2/media': async (req, res, _params) => {
+    const id = `med_${randomUUID().replace(/-/g, '')}`;
+    const body = await getBody(req);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(
+      JSON.stringify({
+        id,
+        is_uploaded: false,
+        designation: body.designation,
+        name: body.name,
+        mime_type: body.mime_type,
+        file_size: body.file_size,
+      }),
+    );
+  },
+  'POST /v2/media/:id/content': async (_req, res, _params) => {
+    res.writeHead(204);
+    res.end('');
   },
 });

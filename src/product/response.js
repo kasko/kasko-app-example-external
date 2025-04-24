@@ -28,7 +28,7 @@ export async function response({ index, queryString }) {
           },
           {
             method: 'paypal',
-            type: 'paypal',
+            type: 'paypal_direct',
             field_definition: [],
             keys: {
               public_key: null,

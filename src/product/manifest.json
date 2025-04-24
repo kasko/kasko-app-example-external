@@ -40,6 +40,25 @@
       "default": {
         "components": [
           {
+            "type": "sidebar",
+            "config": {
+              "components": [
+                {
+                  "type": "markdown",
+                  "config": {
+                    "content_key": "hello.from.sidebar.1"
+                  }
+                },
+                {
+                  "type": "markdown",
+                  "config": {
+                    "content_key": "hello.from.sidebar.2"
+                  }
+                }
+              ]
+            }
+          },
+          {
             "type": "header",
             "class": "mb-xl",
             "config": {
@@ -64,7 +83,7 @@
                         "components": [
                           {
                             "type": "grid-inline",
-                            "class": "py-xs",
+                            "class": "py-sm",
                             "config": {
                               "position": "center",
                               "components": [
@@ -101,6 +120,49 @@
                 }
               ]
             }
+          },
+          {
+            "type": "footer",
+            "config": {
+              "components": [
+                {
+                  "type": "grid-inline",
+                  "config": {
+                    "position": "center",
+                    "components": [
+                      {
+                        "type": "link",
+                        "class": "mx-sm my-xs",
+                        "config": {
+                          "content_key": "footer.faq.title",
+                          "url": "info-faq"
+                        }
+                      },
+                      {
+                        "type": "content-link",
+                        "class": "mx-sm my-xs",
+                        "config": {
+                          "content_key": {
+                            "label": "footer.product_info.title",
+                            "url": "footer.product_info.link"
+                          }
+                        }
+                      },
+                      {
+                        "type": "content-link",
+                        "class": "mx-sm my-xs",
+                        "config": {
+                          "content_key": {
+                            "label": "footer.introducer_info.title",
+                            "url": "footer.introducer_info.link"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
           }
         ]
       }
@@ -118,7 +180,6 @@
           {
             "type": "form",
             "config": {
-              "width": "default",
               "components": [
                 {
                   "type": "markdown",
@@ -144,11 +205,23 @@
               ],
               "footer_components": [
                 {
-                  "type": "form-button-next",
+                  "type": "grid-inline",
+                  "class": "d-block-grid-xs",
                   "config": {
-                    "color": "primary",
-                    "content_key": "form.next.button",
-                    "disabled": false
+                    "position": "center",
+                    "spacing": 0,
+                    "components": [
+                      {
+                        "type": "form-button-next",
+                        "class": "d-block p-xs m-0",
+                        "config": {
+                          "color": "primary",
+                          "content_key": "form.next.button",
+                          "width": "full",
+                          "disabled": false
+                        }
+                      }
+                    ]
                   }
                 }
               ]
@@ -169,7 +242,6 @@
           {
             "type": "form",
             "config": {
-              "width": "default",
               "components": [
                 {
                   "type": "form-input",
@@ -222,35 +294,31 @@
                   }
                 },
                 {
-                  "type": "grid",
+                  "type": "grid-inline",
+                  "class": "d-block-grid-xs",
                   "config": {
-                    "is_flex": true,
-                    "grid": [
+                    "position": "center",
+                    "spacing": 0,
+                    "components": [
                       {
-                        "class": "col-6",
-                        "components": [
-                          {
-                            "type": "button-back",
-                            "config": {
-                              "color": "default",
-                              "content_key": "flow.back.button",
-                              "disabled": false
-                            }
-                          }
-                        ]
+                        "type": "button-back",
+                        "class": "d-block p-xs m-0",
+                        "config": {
+                          "color": "outline",
+                          "content_key": "flow.back.button",
+                          "width": "full",
+                          "disabled": false
+                        }
                       },
                       {
-                        "class": "col-6",
-                        "components": [
-                          {
-                            "type": "form-button-next",
-                            "config": {
-                              "color": "primary",
-                              "content_key": "form.next.button",
-                              "disabled": false
-                            }
-                          }
-                        ]
+                        "type": "form-button-next",
+                        "class": "d-block p-xs m-0",
+                        "config": {
+                          "color": "primary",
+                          "content_key": "form.next.button",
+                          "width": "full",
+                          "disabled": false
+                        }
                       }
                     ]
                   }
@@ -273,7 +341,6 @@
           {
             "type": "form",
             "config": {
-              "width": "default",
               "components": [
                 {
                   "type": "form-input",
@@ -304,35 +371,31 @@
                   }
                 },
                 {
-                  "type": "grid",
+                  "type": "grid-inline",
+                  "class": "d-block-grid-xs",
                   "config": {
-                    "is_flex": true,
-                    "grid": [
+                    "position": "center",
+                    "spacing": 0,
+                    "components": [
                       {
-                        "class": "col-6",
-                        "components": [
-                          {
-                            "type": "button-back",
-                            "config": {
-                              "color": "default",
-                              "content_key": "flow.back.button",
-                              "disabled": false
-                            }
-                          }
-                        ]
+                        "type": "button-back",
+                        "class": "d-block p-xs m-0",
+                        "config": {
+                          "color": "outline",
+                          "content_key": "flow.back.button",
+                          "width": "full",
+                          "disabled": false
+                        }
                       },
                       {
-                        "class": "col-6",
-                        "components": [
-                          {
-                            "type": "form-button-next",
-                            "config": {
-                              "color": "primary",
-                              "content_key": "form.next.button",
-                              "disabled": false
-                            }
-                          }
-                        ]
+                        "type": "form-button-next",
+                        "class": "d-block p-xs m-0",
+                        "config": {
+                          "color": "primary",
+                          "content_key": "form.next.button",
+                          "width": "full",
+                          "disabled": false
+                        }
                       }
                     ]
                   }
@@ -355,7 +418,6 @@
           {
             "type": "form",
             "config": {
-              "width": "default",
               "components": [
                 {
                   "type": "form-input-optin",
@@ -382,35 +444,31 @@
               ],
               "footer_components": [
                 {
-                  "type": "grid",
+                  "type": "grid-inline",
+                  "class": "d-block-grid-xs",
                   "config": {
-                    "is_flex": true,
-                    "grid": [
+                    "position": "center",
+                    "spacing": 0,
+                    "components": [
                       {
-                        "class": "col-6",
-                        "components": [
-                          {
-                            "type": "button-back",
-                            "config": {
-                              "color": "default",
-                              "content_key": "flow.back.button",
-                              "disabled": false
-                            }
-                          }
-                        ]
+                        "type": "button-back",
+                        "class": "d-block p-xs m-0",
+                        "config": {
+                          "color": "outline",
+                          "content_key": "flow.back.button",
+                          "width": "full",
+                          "disabled": false
+                        }
                       },
                       {
-                        "class": "col-6",
-                        "components": [
-                          {
-                            "type": "form-button-next",
-                            "config": {
-                              "color": "primary",
-                              "content_key": "form.next.button",
-                              "disabled": false
-                            }
-                          }
-                        ]
+                        "type": "form-button-next",
+                        "class": "d-block p-xs m-0",
+                        "config": {
+                          "color": "primary",
+                          "content_key": "form.next.button",
+                          "width": "full",
+                          "disabled": false
+                        }
                       }
                     ]
                   }
