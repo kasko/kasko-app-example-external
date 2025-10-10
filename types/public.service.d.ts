@@ -233,8 +233,9 @@ export interface KaskoPublicService {
 
   /**
    * Creates date from string via kaskoDate.
+   * `baseDate` is used to adjust string date like "+1 month" from custom base date instead of today.
    */
-  createDate(date?: Date | string | number): Date;
+  createDate(date?: Date | string | number, baseDate?: Date): Date;
 
   /**
    * Run a JsonLogic schema.
