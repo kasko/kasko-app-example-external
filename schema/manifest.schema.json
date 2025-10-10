@@ -1148,6 +1148,22 @@
             "type": "object",
             "properties": {
               "type": {
+                "const": "policy-renewal-button"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "$ref": "#/definitions/KaskoPolicyRenewalButtonComponent"
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "type": {
                 "const": "policy-update-button"
               }
             },
@@ -1461,6 +1477,7 @@
                     "save-quote-button",
                     "stripe-3d-secure-button",
                     "policy-activate-button",
+                    "policy-renewal-button",
                     "policy-update-button",
                     "poll-documents",
                     "offer-update-button",
@@ -1600,6 +1617,16 @@
         },
         "disabled": {
           "type": "boolean"
+        },
+        "show": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ApiManifestJsonLogic"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "defaultProperties": [],
@@ -1630,6 +1657,16 @@
         },
         "disabled": {
           "type": "boolean"
+        },
+        "show": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ApiManifestJsonLogic"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "defaultProperties": [],
@@ -1671,6 +1708,42 @@
         },
         "label": {
           "description": "Label content key.",
+          "type": "string"
+        },
+        "mobile_seperator": {
+          "description": "Content key for mobile upload seperator text",
+          "type": "string"
+        },
+        "mobile_upload": {
+          "description": "Content key for mobile upload text.",
+          "type": "string"
+        },
+        "qr_label": {
+          "description": "QR modal label content key.",
+          "type": "string"
+        },
+        "qr_footer": {
+          "description": "QR modal footer content key.",
+          "type": "string"
+        },
+        "qr_close_button": {
+          "description": "QR modal close button content key.",
+          "type": "string"
+        },
+        "qr_progress_footer": {
+          "description": "QR upload in progress - modal footer content key.",
+          "type": "string"
+        },
+        "qr_progress_body": {
+          "description": "QR upload in progress - modal body content key.",
+          "type": "string"
+        },
+        "qr_cancelled": {
+          "description": "QR upload cancelled - modal content key.",
+          "type": "string"
+        },
+        "qr_success": {
+          "description": "QR upload successfull - modal label content key.",
           "type": "string"
         }
       },
@@ -1860,6 +1933,32 @@
     "Record<string,string[]>": {
       "type": "object",
       "defaultProperties": []
+    },
+    "FieldMappingJsonLogicItem": {
+      "type": "object",
+      "properties": {
+        "field_name": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ApiManifestJsonLogic"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "source": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "defaultProperties": [],
+      "required": [
+        "field_name",
+        "source"
+      ]
     },
     "GoogleMapsRestrictions": {
       "type": "object",
@@ -3452,6 +3551,30 @@
                   "default": true
                 }
               ]
+            },
+            "content_key": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "General content key.",
+                  "type": "object",
+                  "properties": {
+                    "button_close": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "defaultProperties": []
+                }
+              ]
             }
           },
           "defaultProperties": [],
@@ -4384,13 +4507,6 @@
                   "$ref": "#/definitions/ApiManifestJsonLogic"
                 },
                 {
-                  "description": "Dropdown values",
-                  "default": [
-                    {
-                      "value": true,
-                      "content_key": "one"
-                    }
-                  ],
                   "type": "array",
                   "items": {
                     "$ref": "#/definitions/FieldValueObject"
@@ -5811,6 +5927,16 @@
                   "description": "Content key for the repeater",
                   "type": "object",
                   "properties": {
+                    "button_close": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    },
                     "show_more": {
                       "anyOf": [
                         {
@@ -7434,6 +7560,16 @@
                           "type": "string"
                         }
                       ]
+                    },
+                    "button_close": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
                     }
                   },
                   "defaultProperties": [],
@@ -7501,6 +7637,18 @@
                   "description": "Show footer",
                   "type": "boolean",
                   "default": false
+                }
+              ]
+            },
+            "fix_format_on_blur": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Should format be fixed on input blur event (e.g. 3/3/2029 => 03/03/2029)",
+                  "type": "boolean",
+                  "default": true
                 }
               ]
             }
@@ -7588,6 +7736,16 @@
                   "type": "object",
                   "properties": {
                     "label": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "button_close": {
                       "anyOf": [
                         {
                           "$ref": "#/definitions/ApiManifestJsonLogic"
@@ -7832,6 +7990,18 @@
                 },
                 {
                   "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "disable_manual_edit": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Disable manual edit of the time input",
                   "type": "boolean",
                   "default": false
                 }
@@ -9431,6 +9601,30 @@
                 },
                 {
                   "description": "Show footer",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "disable_qr_upload": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Disables qr code upload",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "disable_parallel_uploads": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Disables parallel uploads, allows another upload when previous has been finished",
                   "type": "boolean",
                   "default": false
                 }
@@ -11288,6 +11482,16 @@
                         }
                       ]
                     },
+                    "button_close": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    },
                     "success": {
                       "anyOf": [
                         {
@@ -11902,6 +12106,159 @@
           "required": [
             "content_key",
             "field_name"
+          ],
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "KaskoPolicyRenewalButtonComponent": {
+      "type": "object",
+      "title": "KaskoPolicyRenewalButtonComponent",
+      "description": "Button used for accepting or cancelling policy renewal.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "default": "policy-renewal-button",
+          "enum": [
+            "policy-renewal-button"
+          ]
+        },
+        "class": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ApiManifestJsonLogic"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "visibility_condition": {
+          "$ref": "#/definitions/ApiManifestJsonLogic"
+        },
+        "config": {
+          "type": "object",
+          "properties": {
+            "fields": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/definitions/ApiManifestJsonLogic"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "content_key": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Content key",
+                  "type": "string"
+                }
+              ]
+            },
+            "action": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Action to perform: accept or cancel",
+                  "enum": [
+                    "accept",
+                    "cancel"
+                  ],
+                  "type": "string"
+                }
+              ]
+            },
+            "color": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Color of the button",
+                  "enum": [
+                    "accent",
+                    "danger",
+                    "outline",
+                    "primary",
+                    "success",
+                    "warning"
+                  ],
+                  "type": "string",
+                  "default": "primary"
+                }
+              ]
+            },
+            "size": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Size of the button",
+                  "enum": [
+                    "normal",
+                    "small"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "width": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Width of the button",
+                  "enum": [
+                    "full",
+                    "normal"
+                  ],
+                  "type": "string",
+                  "default": "normal"
+                }
+              ]
+            },
+            "disabled": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ApiManifestJsonLogic"
+                },
+                {
+                  "description": "Is this button disabled or not",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            }
+          },
+          "defaultProperties": [],
+          "required": [
+            "action",
+            "content_key"
           ],
           "$schema": "http://json-schema.org/draft-07/schema#",
           "additionalProperties": false
@@ -12955,22 +13312,18 @@
           "type": "object",
           "properties": {
             "fields": {
+              "description": "Used form controls names.",
               "anyOf": [
                 {
-                  "$ref": "#/definitions/ApiManifestJsonLogic"
-                },
-                {
-                  "description": "Used form controls names.",
                   "type": "array",
                   "items": {
-                    "anyOf": [
-                      {
-                        "$ref": "#/definitions/ApiManifestJsonLogic"
-                      },
-                      {
-                        "type": "string"
-                      }
-                    ]
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ApiManifestJsonLogic"
                   }
                 }
               ]
@@ -13041,19 +13394,29 @@
             },
             "field_mapping": {
               "description": "Field mapping configuration for Google Api return values.",
-              "$ref": "#/definitions/Record<string,string[]>"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Record<string,string[]>"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/FieldMappingJsonLogicItem"
+                  }
+                }
+              ]
             },
             "prefill_value": {
+              "description": "Autocomplete input prefill value.",
               "anyOf": [
                 {
                   "$ref": "#/definitions/ApiManifestJsonLogic"
                 },
                 {
-                  "description": "Autocomplete input prefill value.",
-                  "type": "string",
-                  "default": "{data.street} {data.house_number}, {data.postcode} {data.city}"
+                  "type": "string"
                 }
-              ]
+              ],
+              "default": "{data.street} {data.house_number}, {data.postcode} {data.city}"
             },
             "restrictions": {
               "description": "Flag name to be dispatched on manual address selection.",
@@ -13169,22 +13532,18 @@
           "type": "object",
           "properties": {
             "fields": {
+              "description": "Used form controls names.",
               "anyOf": [
                 {
-                  "$ref": "#/definitions/ApiManifestJsonLogic"
-                },
-                {
-                  "description": "Used form controls names.",
                   "type": "array",
                   "items": {
-                    "anyOf": [
-                      {
-                        "$ref": "#/definitions/ApiManifestJsonLogic"
-                      },
-                      {
-                        "type": "string"
-                      }
-                    ]
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ApiManifestJsonLogic"
                   }
                 }
               ]
@@ -13203,7 +13562,17 @@
             },
             "field_mapping": {
               "description": "Field mapping configuration for Google Api return values.",
-              "$ref": "#/definitions/Record<string,string[]>"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Record<string,string[]>"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/FieldMappingJsonLogicItem"
+                  }
+                }
+              ]
             },
             "restrictions": {
               "description": "Restrictions for countries where search is allowed",
@@ -13995,6 +14364,16 @@
                   "type": "object",
                   "properties": {
                     "button": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/ApiManifestJsonLogic"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "button_close": {
                       "anyOf": [
                         {
                           "$ref": "#/definitions/ApiManifestJsonLogic"
