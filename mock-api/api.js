@@ -29,7 +29,7 @@ export default mockApi({
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(
       JSON.stringify({
-        gross_premium: Math.ceil(Math.random() * 10000),
+        gross_payment_amount: Math.ceil(Math.random() * 10000),
         currency: 'eur',
         net_premium: 984,
         net_service_fee_total: 0,
